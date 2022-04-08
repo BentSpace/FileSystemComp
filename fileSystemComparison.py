@@ -24,8 +24,12 @@ def hyFileSysCreate():
     os.mkdir(directoryPath)
     i = 1
     while i <= 100:
-        f = open(directoryPath + "/file" + str(i) + ".txt", "w")
+        if i % 10 == 1:
+            newDir = directoryPath + "/files" + str(i) + "-" + str(i + 9) 
+            os.mkdir(newDir)
+        f = open(newDir + "/file" + str(i) + ".txt", "w")
         f.close()
         i += 1
 
 singleRootFileSysCreate()
+hyFileSysCreate()

@@ -1,3 +1,21 @@
+# A comparison of single level vs hierarchical file systems
+# by Nathan Bertram
+#
+# It took anywhere from 2.8 to 5.7 times longer to traverse the hierachical file
+# system than the single level one, even thought they had exactly the same number
+# of files.  Apparently it takes quite a bit of time to move between directories
+# Thus making the single level system potential must faster, but also less 
+# organized.  Single level could be a good chose when speed is paramount.
+# 
+# If you had a system that only support single level architecture you could 
+# implement something similar to a hierachical by using a naming convention for
+# your files that could something like [directoryName]_[subDirectoryName]_[fileName]
+# where directory names are seperately from each other and the file name by the 
+# underscore character.  The string after the last underscore is always the file
+# name and it can be preceeded by an arbitrary number of directory and sub 
+# directory names.  The underscore character can not be used in directory or file 
+# names.
+
 import os
 import shutil
 import ast

@@ -1,5 +1,6 @@
 import os
 import shutil
+import ast
 
 homeDirectory = os.path.expanduser('~')
 directoryPathSingle = homeDirectory + "/singleRoot"
@@ -36,7 +37,7 @@ def traverseDirectory(startDir):
     dirDict = {}
     for dirName, subdirList, fileList in os.walk(startDir):
         for fileName in fileList:
-            fileSize = os.path.getsize(fileName)
+            fileSize = os.path.getsize(dirName + "/" + fileName)
             fileDict.update({fileName: fileSize})
         for subdir in subdirList:
             dirSize = os.path.getsize(startDir + "/" + subdir)
@@ -45,18 +46,30 @@ def traverseDirectory(startDir):
 
 def writeToFile(startDir, fileDict, dirDict = None):
     if startDir == directoryPathSingle:
-        fileName = "singleLevelFiles.txt"
+        fileName = startDir + "/" + "singleLevelFiles.txt"
     else:
-        fileName = "hierarchicalFiles.txt"
+        fileName = startDir + "/" + "hierarchicalFiles.txt"
     f = open(fileName, "w")
     f.write(str(fileDict))
+    f.write("*")
     f.write(str(dirDict))
     f.close()
 
+def printToScreen(file):
+    with open(file) as f:
+        data = f.read()
+    splitData = data.split("*")
+    fileDict = ast.literal_eval(splitData[0])
+    dirDict = ast.literal_eval(splitData[1])
+    print(fileDict)
+    print(dirDict)
 
 singleRootFileSysCreate()
 hyFileSysCreate()
 fileDict, dirDict = traverseDirectory(directoryPathSingle)
 writeToFile(directoryPathSingle, fileDict)
+printToScreen(directoryPathSingle + "/" + "singleLevelFiles.txt")
 fileDict, dirDict = traverseDirectory(directoryPathHy)
 writeToFile(directoryPathHy, fileDict, dirDict)
+printToScreen(directoryPathHy  + "/" + "hierarchicalFiles.txt")
+

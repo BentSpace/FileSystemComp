@@ -61,8 +61,33 @@ def printToScreen(file):
     splitData = data.split("*")
     fileDict = ast.literal_eval(splitData[0])
     dirDict = ast.literal_eval(splitData[1])
-    print(fileDict)
-    print(dirDict)
+    # print(fileDict)
+    # print(dirDict)
+    aveFileSize, numFiles = findAveSizeAndNum(fileDict)
+    if dirDict != None:
+        aveDirSize, numDirs = findAveSizeAndNum(dirDict)
+    if file == directoryPathSingle + "/" + "singleLevelFiles.txt":
+        print("\nSingle Level File System")
+        print("Number of files: " + str(numFiles))
+        print("Average File Size: " + str(aveFileSize))
+        print("Traversal Time: ")
+    else:
+        print("\nHierarchical Level File System")
+        print("Number of files: " + str(numFiles))
+        print("Number of Directories: " + str(numDirs))
+        print("Average File Size: " + str(aveFileSize))
+        print("Average Directory Size: " + str(aveDirSize))
+        print("Traversal Time: ")
+
+def findAveSizeAndNum(dict):
+    sum = 0
+    num = 0
+    values = dict.values()
+    for size in values:
+        sum += size
+        num += 1
+    ave = sum / num
+    return ave, num
 
 singleRootFileSysCreate()
 hyFileSysCreate()

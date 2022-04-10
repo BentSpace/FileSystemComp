@@ -43,12 +43,20 @@ def traverseDirectory(startDir):
             dirDict.update({subdir: dirSize})
     return fileDict, dirDict
 
-# def writeToFile():
+def writeToFile(startDir, fileDict, dirDict = None):
+    if startDir == directoryPathSingle:
+        fileName = "singleLevelFiles.txt"
+    else:
+        fileName = "hierarchicalFiles.txt"
+    f = open(fileName, "w")
+    f.write(str(fileDict))
+    f.write(str(dirDict))
+    f.close()
 
 
 singleRootFileSysCreate()
 hyFileSysCreate()
 fileDict, dirDict = traverseDirectory(directoryPathSingle)
-print(fileDict, dirDict)
+writeToFile(directoryPathSingle, fileDict)
 fileDict, dirDict = traverseDirectory(directoryPathHy)
-print(fileDict, dirDict)
+writeToFile(directoryPathHy, fileDict, dirDict)

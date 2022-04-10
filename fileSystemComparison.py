@@ -1,6 +1,7 @@
 import os
 import shutil
 import ast
+import time
 
 homeDirectory = os.path.expanduser('~')
 directoryPathSingle = homeDirectory + "/singleRoot"
@@ -33,6 +34,7 @@ def hyFileSysCreate():
         i += 1
 
 def traverseDirectory(startDir):
+    startTime = time.time()
     fileDict = {}
     dirDict = {}
     for dirName, subdirList, fileList in os.walk(startDir):
@@ -42,7 +44,9 @@ def traverseDirectory(startDir):
         for subdir in subdirList:
             dirSize = os.path.getsize(startDir + "/" + subdir)
             dirDict.update({subdir: dirSize})
-    return fileDict, dirDict
+    endTime = time.time()
+    traversalTime = endTime - startTime
+    return fileDict, dirDict, traversalTime
 
 def writeToFile(startDir, fileDict, dirDict = None):
     if startDir == directoryPathSingle:
@@ -55,7 +59,7 @@ def writeToFile(startDir, fileDict, dirDict = None):
     f.write(str(dirDict))
     f.close()
 
-def printToScreen(file):
+def printToScreen(file, traversalTime):
     with open(file) as f:
         data = f.read()
     splitData = data.split("*")
@@ -70,14 +74,14 @@ def printToScreen(file):
         print("\nSingle Level File System")
         print("Number of files: " + str(numFiles))
         print("Average File Size: " + str(aveFileSize))
-        print("Traversal Time: ")
+        print("Traversal Time: " + str(traversalTime) + " MS\n")
     else:
-        print("\nHierarchical Level File System")
+        print("Hierarchical Level File System")
         print("Number of files: " + str(numFiles))
         print("Number of Directories: " + str(numDirs))
         print("Average File Size: " + str(aveFileSize))
         print("Average Directory Size: " + str(aveDirSize))
-        print("Traversal Time: ")
+        print("Traversal Time: " + str(traversalTime) + " MS\n")
 
 def findAveSizeAndNum(dict):
     sum = 0
@@ -91,10 +95,10 @@ def findAveSizeAndNum(dict):
 
 singleRootFileSysCreate()
 hyFileSysCreate()
-fileDict, dirDict = traverseDirectory(directoryPathSingle)
+fileDict, dirDict, traversalTimeSingle = traverseDirectory(directoryPathSingle)
 writeToFile(directoryPathSingle, fileDict)
-printToScreen(directoryPathSingle + "/" + "singleLevelFiles.txt")
-fileDict, dirDict = traverseDirectory(directoryPathHy)
+printToScreen(directoryPathSingle + "/" + "singleLevelFiles.txt", traversalTimeSingle)
+fileDict, dirDict, traversalTimeHy = traverseDirectory(directoryPathHy)
 writeToFile(directoryPathHy, fileDict, dirDict)
-printToScreen(directoryPathHy  + "/" + "hierarchicalFiles.txt")
+printToScreen(directoryPathHy  + "/" + "hierarchicalFiles.txt", traversalTimeHy)
 
